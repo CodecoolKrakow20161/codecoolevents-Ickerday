@@ -1,7 +1,12 @@
 package com.codecool.events.dao;
 
-/**
- * Created by rafalstepien on 28/04/2017.
- */
-public class EventDao {
+import com.codecool.events.model.Event;
+import java.util.List;
+
+public interface EventDao {
+
+  Event find(Integer id);
+
+  List<Event> getAllEvents();
+
 }
