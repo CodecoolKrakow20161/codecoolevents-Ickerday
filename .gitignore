@@ -14,3 +14,5 @@ hs_err_pid*
 project.iml
 *.iml
 target/generated-sources/
+
+*.db-journal
