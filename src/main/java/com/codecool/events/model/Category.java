@@ -1,4 +1,4 @@
-package model;
+package com.codecool.events.model;
 
 public class Category extends BaseModel {
 

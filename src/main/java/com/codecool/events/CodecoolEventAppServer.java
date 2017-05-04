@@ -1,3 +1,5 @@
+package com.codecool.events;
+
 import static spark.Spark.*;
 
 class CodecoolEventAppServer {

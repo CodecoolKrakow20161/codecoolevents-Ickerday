@@ -1,6 +1,5 @@
-package controller;
+package com.codecool.events.controller;
 
-import dao.EventDao;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;

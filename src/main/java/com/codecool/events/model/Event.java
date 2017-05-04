@@ -1,4 +1,4 @@
-package model;
+package com.codecool.events.model;
 
 import java.util.Date;
 
