@@ -14,4 +14,12 @@ public class Event extends BaseModel {
     this.category = category;
     this.date = date;
   }
+
+  public Category getCategory() {
+    return category;
+  }
+
+  public Date getDate() {
+    return date;
+  }
 }
