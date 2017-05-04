@@ -7,9 +7,6 @@ import spark.Response;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by rafalstepien on 28/04/2017.
- */
 public class EventController {
     public static ModelAndView renderProducts(Request req, Response res) {
         //Get events from database by Dao
