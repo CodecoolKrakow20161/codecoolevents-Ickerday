@@ -5,7 +5,11 @@ import java.util.List;
 
 public interface EventDao {
 
+  void upsert(Event event);
+
   Event find(Integer id);
+
+  void delete(Event event);
 
   List<Event> getAllEvents();
 

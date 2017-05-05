@@ -8,8 +8,26 @@ import java.util.List;
 public class EventDaoImpl implements EventDao {
 
   @Override
+  public void upsert(Event event) {
+    try {
+      new DbConnector().upsertEvent(event);
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Override
   public Event find(Integer id) {
     return null;
+  }
+
+  @Override
+  public void delete(Event event) {
+    try {
+      new DbConnector().deleteEvent(event);
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
   }
 
   @Override
