@@ -1,3 +1,7 @@
 body {
-  background: #edffef;
+  background: #cad6ff;
+}
+
+.popover {
+  min-width: 30em;
 }
