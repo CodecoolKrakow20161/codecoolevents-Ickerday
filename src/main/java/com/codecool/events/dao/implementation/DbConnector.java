@@ -14,7 +14,6 @@ class DbConnector {
       Class.forName("org.sqlite.JDBC");
       conn = DriverManager.getConnection("jdbc:sqlite:src/main/resources/database/database.db");
     } catch (Exception e) {
-      e.printStackTrace();
       throw new SQLException("SQL ERROR: Couldn't connect to database!");
     }
     return conn;
@@ -29,7 +28,7 @@ class DbConnector {
     CategoryDaoImpl categoryDao = new CategoryDaoImpl();
 
     try {
-      Connection conn = this.connect();
+      Connection conn = connect();
       Statement dbStatement = conn.createStatement();
 
       ResultSet dbQuery = dbStatement.executeQuery("SELECT * FROM Events");
@@ -40,11 +39,12 @@ class DbConnector {
             dbQuery.getString("name"),
             dbQuery.getString("description"),
             categoryDao.find(dbQuery.getInt("categoryID")),
-            new Date(dbQuery.getInt("date"))
+            new Date(dbQuery.getLong("Date"))
         ));
       }
 
     } catch (SQLException e) {
+      e.printStackTrace();
       throw new SQLException("SQL ERROR: Couldn't get events!");
     }
 
@@ -53,7 +53,7 @@ class DbConnector {
 
   void upsertEvent(Event event) throws SQLException {
     try {
-      Connection conn = this.connect();
+      Connection conn = connect();
       Statement dbStatement = conn.createStatement();
 
       dbStatement.execute("INSERT OR REPLACE INTO Events (id, name, description, date, categoryID)"
@@ -76,7 +76,7 @@ class DbConnector {
 
   void deleteEvent(Event event) throws SQLException {
     try {
-      Connection conn = this.connect();
+      Connection conn = connect();
       Statement dbStatement = conn.createStatement();
 
       String query = "DELETE FROM Events WHERE id=" + event.getId();
