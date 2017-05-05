@@ -6,10 +6,9 @@ class BaseModel {
   private String name;
   private String description;
 
-  BaseModel() {
-  }
-
-  BaseModel(String name) {
+  BaseModel(String name, String description) {
+    this.name = name;
+    this.description = description;
   }
 
   BaseModel(Integer id, String name, String description) {
