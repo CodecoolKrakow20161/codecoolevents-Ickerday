@@ -13,11 +13,7 @@ class CodecoolEventAppServer {
 
     get("/shrug", (req, res) -> "¯\\_(ツ)_/¯");
 
-    try {
-      get("/", EventController::renderEvents, new ThymeleafTemplateEngine());
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    get("/", EventController::renderEvents, new ThymeleafTemplateEngine());
 
   }
 }
