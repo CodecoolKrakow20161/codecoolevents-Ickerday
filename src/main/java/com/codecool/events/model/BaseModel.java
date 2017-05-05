@@ -6,6 +6,12 @@ class BaseModel {
   private String name;
   private String description;
 
+  BaseModel() {
+  }
+
+  BaseModel(String name) {
+  }
+
   BaseModel(Integer id, String name, String description) {
     this.id = id;
     this.name = name;
@@ -18,6 +24,15 @@ class BaseModel {
 
   public String getName() {
     return name;
+  }
+
+  @Override
+  public String toString() {
+    return "BaseModel{" +
+        "id=" + id +
+        ", name='" + name + '\'' +
+        ", description='" + description + '\'' +
+        '}';
   }
 
   public String getDescription() {
