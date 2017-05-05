@@ -15,4 +15,4 @@ project.iml
 *.iml
 
 *.db-journal
-target/*
+/target/
