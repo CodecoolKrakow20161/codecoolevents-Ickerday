@@ -39,7 +39,7 @@ class DbConnector {
             dbQuery.getString("name"),
             dbQuery.getString("description"),
             categoryDao.find(dbQuery.getInt("categoryID")),
-            new Date(dbQuery.getLong("Date"))
+            new Date(Long.parseLong(dbQuery.getString("Date")))
         ));
       }
 
