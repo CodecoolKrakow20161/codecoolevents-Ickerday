@@ -9,11 +9,14 @@ class CodecoolEventAppServer {
 
   CodecoolEventAppServer() {
     port(8888);
-    staticFileLocation("/public");
+    staticFileLocation("/static");
 
     get("/shrug", (req, res) -> "¯\\_(ツ)_/¯");
 
     get("/", EventController::renderEvents, new ThymeleafTemplateEngine());
+
+    post("/article/create", EventController::handleAddEditRequest);
+
 
   }
 }
