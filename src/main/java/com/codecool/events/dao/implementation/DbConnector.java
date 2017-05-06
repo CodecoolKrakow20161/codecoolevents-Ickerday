@@ -39,7 +39,8 @@ class DbConnector {
             dbQuery.getString("name"),
             dbQuery.getString("description"),
             getCategoryBy(dbQuery.getInt("categoryID")),
-            new Date(dbQuery.getLong("date"))
+            new Date(dbQuery.getLong("date")),
+            dbQuery.getString("link")
         );
       }
     } catch (Exception e) {
@@ -64,7 +65,8 @@ class DbConnector {
             dbQuery.getString("name"),
             dbQuery.getString("description"),
             getCategoryBy(dbQuery.getInt("categoryID")),
-            new Date(dbQuery.getLong("date"))
+            new Date(dbQuery.getLong("date")),
+            dbQuery.getString("link")
         ));
       }
     } catch (Exception e) {
@@ -110,7 +112,8 @@ class DbConnector {
             dbQuery.getString("name"),
             dbQuery.getString("description"),
             getCategoryBy(dbQuery.getInt("categoryID")),
-            new Date(Long.parseLong(dbQuery.getString("date")))
+            new Date(Long.parseLong(dbQuery.getString("date"))),
+            dbQuery.getString("link")
         ));
       }
 
@@ -156,13 +159,16 @@ class DbConnector {
       Connection conn = connect();
       Statement dbStatement = conn.createStatement();
 
-      dbStatement.execute("INSERT OR REPLACE INTO Event (id, name, description, date, categoryID)"
-          + " VALUES ((SELECT id FROM Event WHERE id=" +
-          event.getId() + "), '" +
-          event.getName() + "', '" +
-          event.getDescription() + "', " +
-          event.getDate() + ", " +
-          event.getCategory().getId() + ")");
+      dbStatement
+          .execute("INSERT OR REPLACE INTO Event (id, name, description, date, categoryID, link)"
+              + " VALUES ((SELECT id FROM Event WHERE id=" +
+              event.getId() + "), '" +
+              event.getName() + "', '" +
+              event.getDescription() + "', " +
+              event.getDate() + ", " +
+              event.getCategory().getId() + ", '" +
+              event.getLink() + "')"
+          );
 
       dbStatement.close();
       closeConnection(conn);
