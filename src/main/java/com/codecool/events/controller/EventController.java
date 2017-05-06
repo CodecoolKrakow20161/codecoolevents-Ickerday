@@ -1,5 +1,7 @@
 package com.codecool.events.controller;
 
+import com.codecool.events.dao.CategoryDao;
+import com.codecool.events.dao.EventDao;
 import com.codecool.events.dao.implementation.CategoryDaoImpl;
 import com.codecool.events.dao.implementation.EventDaoImpl;
 import com.codecool.events.model.Category;
@@ -15,10 +17,19 @@ import spark.Response;
 public class EventController {
 
   public static ModelAndView renderEvents(Request req, Response res) {
-    EventDaoImpl eventDao = new EventDaoImpl();
-    Map<String, List<Event>> params = new HashMap<>();
+    EventDao eventDao = new EventDaoImpl();
+    CategoryDao categoryDao = new CategoryDaoImpl();
 
-    params.put("eventList", eventDao.getAllEvents());
+    Map<String, List> params = new HashMap<>();
+
+    if (req.params().containsKey(":id")) {
+      Category chosenCategory = categoryDao.find(Integer.parseInt(req.params(":id")));
+      params.put("eventList", eventDao.getEventsBy(chosenCategory));
+    } else {
+      params.put("eventList", eventDao.getAllEvents());
+    }
+
+    params.put("categoryList", categoryDao.getAllCategories());
 
     return new ModelAndView(params, "product/index");
   }
@@ -31,8 +42,9 @@ public class EventController {
     String eventDescription = req.queryParams("event-description");
     Category eventCategory = categoryDao
         .find(Integer.getInteger(req.queryParams("event-category-id")));
+    Date eventDate = new Date();
 
-    eventDao.upsert(new Event(eventName, eventDescription, eventCategory, new Date()));
+    eventDao.upsert(new Event(eventName, eventDescription, eventCategory, eventDate));
 
     res.status(201);
     res.redirect("/");

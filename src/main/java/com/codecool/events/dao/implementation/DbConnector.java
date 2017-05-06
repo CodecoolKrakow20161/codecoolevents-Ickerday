@@ -39,13 +39,38 @@ class DbConnector {
             dbQuery.getString("name"),
             dbQuery.getString("description"),
             getCategoryBy(dbQuery.getInt("categoryID")),
-            new Date(Long.parseLong(dbQuery.getString("Date")))
+            new Date(dbQuery.getLong("date"))
         );
       }
     } catch (Exception e) {
       throw new SQLException("Couldn't found event!");
     }
     return foundEvent;
+  }
+
+  List<Event> getEventsBy(Category category) throws SQLException {
+    List<Event> foundEventList = new ArrayList<>();
+
+    try {
+      Connection conn = connect();
+      Statement dbStatement = conn.createStatement();
+
+      ResultSet dbQuery = dbStatement
+          .executeQuery("SELECT * FROM Event WHERE categoryID=" + category.getId());
+
+      while (dbQuery.next()) {
+        foundEventList.add(new Event(
+            dbQuery.getInt("id"),
+            dbQuery.getString("name"),
+            dbQuery.getString("description"),
+            getCategoryBy(dbQuery.getInt("categoryID")),
+            new Date(dbQuery.getLong("date"))
+        ));
+      }
+    } catch (Exception e) {
+      throw new SQLException("Couldn't found events!");
+    }
+    return foundEventList;
   }
 
   Category getCategoryBy(Integer id) throws SQLException {
@@ -85,7 +110,7 @@ class DbConnector {
             dbQuery.getString("name"),
             dbQuery.getString("description"),
             getCategoryBy(dbQuery.getInt("categoryID")),
-            new Date(Long.parseLong(dbQuery.getString("Date")))
+            new Date(Long.parseLong(dbQuery.getString("date")))
         ));
       }
 
@@ -114,11 +139,11 @@ class DbConnector {
             dbQuery.getString("name"),
             dbQuery.getString("description")
         ));
-
-        dbQuery.close();
-        dbStatement.close();
-        closeConnection(conn);
       }
+
+      dbQuery.close();
+      dbStatement.close();
+      closeConnection(conn);
     } catch (SQLException e) {
       e.printStackTrace();
       throw new SQLException("SQL ERROR: Couldn't get categories!");
@@ -160,4 +185,8 @@ class DbConnector {
       throw new SQLException("SQL ERROR: Couldn't delete from database!");
     }
   }
+
+// getEventBy + getCategoryBy
+
+// getEvents + getCategories
 }

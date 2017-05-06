@@ -1,6 +1,7 @@
 package com.codecool.events.dao.implementation;
 
 import com.codecool.events.dao.EventDao;
+import com.codecool.events.model.Category;
 import com.codecool.events.model.Event;
 import java.sql.SQLException;
 import java.util.List;
@@ -42,6 +43,17 @@ public class EventDaoImpl implements EventDao {
     List<Event> eventList = null;
     try {
       eventList = new DbConnector().getEvents();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return eventList;
+  }
+
+  @Override
+  public List<Event> getEventsBy(Category category) {
+    List<Event> eventList = null;
+    try {
+      eventList = new DbConnector().getEventsBy(category);
     } catch (SQLException e) {
       e.printStackTrace();
     }

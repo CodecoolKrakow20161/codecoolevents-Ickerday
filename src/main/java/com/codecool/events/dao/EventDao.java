@@ -1,5 +1,6 @@
 package com.codecool.events.dao;
 
+import com.codecool.events.model.Category;
 import com.codecool.events.model.Event;
 import java.util.List;
 
@@ -13,6 +14,6 @@ public interface EventDao {
 
   List<Event> getAllEvents();
 
-  List<Event> getEventsBy();
+  List<Event> getEventsBy(Category category);
 
 }
