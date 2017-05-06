@@ -12,18 +12,20 @@ class CodecoolEventAppServer {
     port(8888);
     staticFileLocation("/static");
 
+    get("/event/add", EventController::renderAddForm, new ThymeleafTemplateEngine());
+
+    post("/event/add", EventController::handleAddEditRequest, new ThymeleafTemplateEngine());
+
     // TODO
-    get("/event/:id/edit", EventController::renderEvents, new ThymeleafTemplateEngine());
+//    get("/event/:id/edit", EventController::renderEditForm, new ThymeleafTemplateEngine());
 
     //TODO
-    get("/event/:id/delete", EventController::renderEvents, new ThymeleafTemplateEngine());
+//    get("/event/:id/delete", EventController::deleteEvent, new ThymeleafTemplateEngine());
 
-    // TODO
     get("/category/:id", EventController::renderEvents, new ThymeleafTemplateEngine());
 
-    // TODO
-    post("/event/add", EventController::handleAddEditRequest);
-
     get("/", EventController::renderEvents, new ThymeleafTemplateEngine());
+
+    // TODO
   }
 }

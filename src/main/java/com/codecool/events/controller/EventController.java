@@ -8,7 +8,6 @@ import com.codecool.events.model.Category;
 import com.codecool.events.model.Event;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import spark.ModelAndView;
 import spark.Request;
@@ -35,23 +34,31 @@ public class EventController {
 
     params.put("categoryList", categoryDao.getAllCategories());
 
-    return new ModelAndView(params, "product/index");
+    return new ModelAndView(params, "event/index");
   }
 
-  public static Object handleAddEditRequest(Request req, Response res) {
+  public static ModelAndView renderAddForm(Request req, Response res) {
+    CategoryDao categoryDao = new CategoryDaoImpl();
+    Map<String, Object> params = new HashMap<>();
+
+    params.put("categoryList", categoryDao.getAllCategories());
+    return new ModelAndView(params, "event/add");
+  }
+
+  public static ModelAndView handleAddEditRequest(Request req, Response res) {
     CategoryDaoImpl categoryDao = new CategoryDaoImpl();
     EventDaoImpl eventDao = new EventDaoImpl();
 
     String eventName = req.queryParams("event-name");
     String eventDescription = req.queryParams("event-description");
     Category eventCategory = categoryDao
-        .find(Integer.getInteger(req.queryParams("event-category-id")));
+        .find(Integer.getInteger(req.queryParams("event-category")));
     Date eventDate = new Date();
 
     eventDao.upsert(new Event(eventName, eventDescription, eventCategory, eventDate));
 
     res.status(201);
     res.redirect("/");
-    return "";
+    return renderEvents(req, res);
   }
 }
