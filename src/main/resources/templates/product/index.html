@@ -49,23 +49,24 @@
   <div id="events" class="panel panel-primary" th:if="${not eventList.isEmpty()}">
     <div class="panel-body col-sm-2 col-lg-4" th:each="event : ${eventList}">
 
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <strong th:text="${event.getName()}"></strong>
-          <p th:text="${#dates.format(event.getDate(), 'dd MMMMMMMMMMMM yyyy HH:mm')}"></p>
-        </div>
-        <div class="panel-footer blockquote-reverse">
-          <div class="btn-group btn-group-sm">
-            <button type="button" class="btn btn-info"
-                    data-toggle="popover" title="About event:" data-trigger="focus"
-                    th:data-content="${event.getDescription()}">Description
-            </button>
-            <button type="button" class="btn btn-primary">Link</button>
-            <button type="button" class="btn btn-warning">Edit</button>
-            <button type="button" class="btn btn-danger">Delete</button>
+      <a th:href="'http://' + ${event.getLink()}">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <strong th:text="${event.getName()}"></strong>
+            <p th:text="${#dates.format(event.getDate(), 'dd MMMMMMMMMMMM yyyy HH:mm')}"></p>
+          </div>
+          <div class="panel-footer blockquote-reverse">
+            <div class="btn-group btn-group-sm">
+              <button type="button" class="btn btn-info"
+                      data-toggle="popover" data-trigger="focus"
+                      th:data-content="${event.getDescription()}">Description
+              </button>
+              <button type="button" class="btn btn-warning">Edit</button>
+              <button type="button" class="btn btn-danger">Delete</button>
+            </div>
           </div>
         </div>
-      </div>
+      </a>
 
 
     </div>
