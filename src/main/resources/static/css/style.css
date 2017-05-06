@@ -1,7 +1,7 @@
 body {
-  background: #cad6ff;
+  background: url("/img/bg.png") no-repeat center fixed;
 }
 
 .popover {
-  min-width: 30em;
+  min-width: 25em;
 }
