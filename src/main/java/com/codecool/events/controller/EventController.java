@@ -20,13 +20,17 @@ public class EventController {
     EventDao eventDao = new EventDaoImpl();
     CategoryDao categoryDao = new CategoryDaoImpl();
 
-    Map<String, List> params = new HashMap<>();
+    Map<String, Object> params = new HashMap<>();
 
     if (req.params().containsKey(":id")) {
-      Category chosenCategory = categoryDao.find(Integer.parseInt(req.params(":id")));
+      Integer categoryID = Integer.parseInt(req.params(":id"));
+      Category chosenCategory = categoryDao.find(categoryID);
       params.put("eventList", eventDao.getEventsBy(chosenCategory));
+
+      params.put("tabActive", categoryID);
     } else {
       params.put("eventList", eventDao.getAllEvents());
+      params.put("tabActive", "all");
     }
 
     params.put("categoryList", categoryDao.getAllCategories());

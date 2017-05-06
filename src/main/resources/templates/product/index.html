@@ -36,10 +36,13 @@
 
   <nav>
     <ul class="nav nav-tabs" id="categories">
-      <li class="active" id="all-events"><a th:href="@{~/}">All events</a></li>
+      <!--/*@thymesVar id="tabActive" type="String"*/-->
+      <li th:class="(${tabActive} == 'all')? 'active' : ''" id="all-events"><a
+          th:href="@{~/}">All events</a></li>
 
       <!--/*@thymesVar id="categoryList" type="List<Category>"*/-->
-      <li th:each="category : ${categoryList}" th:id="'category-' + ${category.getId()}">
+      <li th:class="(${tabActive} == ${category.getId()})? 'active' : ''"
+          th:each="category : ${categoryList}" th:id="'category-' + ${category.getId()}">
         <a href="#" th:href="@{'~/category/' + ${category.getId()}}"
            th:text="${category.getName()}"></a>
       </li>
@@ -49,24 +52,26 @@
   <div id="events" class="panel panel-primary" th:if="${not eventList.isEmpty()}">
     <div class="panel-body col-sm-2 col-lg-4" th:each="event : ${eventList}">
 
-      <a th:href="'http://' + ${event.getLink()}">
-        <div class="panel panel-default">
-          <div class="panel-heading">
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <a th:href="'http://' + ${event.getLink()}">
             <strong th:text="${event.getName()}"></strong>
-            <p th:text="${#dates.format(event.getDate(), 'dd MMMMMMMMMMMM yyyy HH:mm')}"></p>
-          </div>
-          <div class="panel-footer blockquote-reverse">
-            <div class="btn-group btn-group-sm">
-              <button type="button" class="btn btn-info"
-                      data-toggle="popover" data-trigger="focus"
-                      th:data-content="${event.getDescription()}">Description
-              </button>
-              <button type="button" class="btn btn-warning">Edit</button>
-              <button type="button" class="btn btn-danger">Delete</button>
-            </div>
+          </a>
+          <p th:text="${#dates.format(event.getDate(), 'dd MMMMMMMMMMMM yyyy HH:mm')}"></p>
+        </div>
+
+        <div class="panel-footer blockquote-reverse">
+          <div class="btn-group btn-group-sm">
+            <button type="button" class="btn btn-info"
+                    data-toggle="popover" data-trigger="focus"
+                    th:data-content="${event.getDescription()}">Description
+            </button>
+            <button type="button" class="btn btn-warning">Edit</button>
+            <button type="button" class="btn btn-danger">Delete</button>
           </div>
         </div>
-      </a>
+      </div>
 
 
     </div>
