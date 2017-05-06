@@ -18,7 +18,14 @@ public class EventDaoImpl implements EventDao {
 
   @Override
   public Event find(Integer id) {
-    return null;
+    Event foundEvent = null;
+
+    try {
+      foundEvent = new DbConnector().getEventBy(id);
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return foundEvent;
   }
 
   @Override
