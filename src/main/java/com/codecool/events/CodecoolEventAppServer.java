@@ -18,6 +18,8 @@ class CodecoolEventAppServer {
     // TODO
     get("/event/:id/edit", EventController::renderEditForm, new ThymeleafTemplateEngine());
 
+    post("/event/:id/edit", EventController::handleEditRequest, new ThymeleafTemplateEngine());
+
     get("/event/:id/delete", EventController::handleDeleteRequest, new ThymeleafTemplateEngine());
 
     get("/category/:id", EventController::renderEvents, new ThymeleafTemplateEngine());
