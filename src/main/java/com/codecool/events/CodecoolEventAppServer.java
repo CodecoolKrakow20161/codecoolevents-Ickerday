@@ -8,7 +8,6 @@ import spark.template.thymeleaf.ThymeleafTemplateEngine;
 class CodecoolEventAppServer {
 
   CodecoolEventAppServer() {
-
     port(8888);
     staticFileLocation("/static");
 
@@ -17,15 +16,13 @@ class CodecoolEventAppServer {
     post("/event/add", EventController::handleAddEditRequest, new ThymeleafTemplateEngine());
 
     // TODO
-//    get("/event/:id/edit", EventController::renderEditForm, new ThymeleafTemplateEngine());
+    get("/event/:id/edit", EventController::renderEditForm, new ThymeleafTemplateEngine());
 
     //TODO
-//    get("/event/:id/delete", EventController::deleteEvent, new ThymeleafTemplateEngine());
+    get("/event/:id/delete", EventController::handleDeleteRequest, new ThymeleafTemplateEngine());
 
     get("/category/:id", EventController::renderEvents, new ThymeleafTemplateEngine());
 
     get("/", EventController::renderEvents, new ThymeleafTemplateEngine());
-
-    // TODO
   }
 }
