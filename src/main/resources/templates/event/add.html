@@ -37,28 +37,30 @@
   <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
     <form th:action="@{~/event/add}" method="POST">
       <div class="form-group">
-        <label for="event-name">Name:</label>
-        <input type="text" class="form-control" id="event-name"/>
+        <label>Name:</label>
+        <input type="text" class="form-control" name="event-name"/>
       </div>
       <div class="form-group">
-        <textarea class="form-control" id="event-description" placeholder="Description"></textarea>
+        <textarea class="form-control" name="event-description"
+                  placeholder="Description"></textarea>
       </div>
       <div class="form-group">
-        <label for="event-name">Link:</label>
-        <input type="text" class="form-control" id="event-link"
+        <label>Link:</label>
+        <input type="text" class="form-control" name="event-link"
                placeholder="e.g. www.google.com, without 'http://'"/>
       </div>
       <div class="form-group">
-        <label for="event-name">Date:</label>
-        <input type="datetime" class="form-control" id="event-date"/>
+        <label>Date:</label>
+        <input type="datetime" class="form-control" name="event-date"/>
       </div>
       <div class="form-group">
-        <label for="event-name">Category:</label>
+        <label>Category:</label>
         <!--/*@thymesVar id="categoryList" type="List<Category>"*/-->
-        <select class="form-control" id="event-category">
+        <select class="form-control" name="event-category">
           <option selected disabled>Category</option>
           <option th:each="category : ${categoryList}"
-                  th:id="'category-' + ${category.getId()}" th:text="${category.getName()}"></option>
+                  th:text="${category.getName()}"
+                  th:value="${category.getId()}"></option>
         </select>
       </div>
       <div class="form-group" id="event-submit">
@@ -68,7 +70,6 @@
     </form>
   </div>
   <div class="col-sm-1 col-md-2 col-lg-3"></div>
-
 
 
 </div>
