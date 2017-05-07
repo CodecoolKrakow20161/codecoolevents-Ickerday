@@ -7,6 +7,8 @@ import com.codecool.events.dao.implementation.EventDaoImpl;
 import com.codecool.events.model.Category;
 import com.codecool.events.model.Event;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -59,6 +61,13 @@ public class EventController {
     Map<String, Object> params = new HashMap<>();
 
     try {
+      String eventName = req.queryParams("event-name");
+      String eventDescription = req.queryParams("event-description");
+      Category eventCategory = categoryDao
+          .find(Integer.parseInt(req.queryParams("event-category")));
+      Date eventDate = new Date();
+      String eventLink = req.queryParams("event-link");
+
       params.put("categoryList", categoryDao.getAllCategories());
     } catch (SQLException e) {
       e.printStackTrace();
@@ -66,7 +75,7 @@ public class EventController {
     return new ModelAndView(params, "event/add");
   }
 
-  public static ModelAndView handleAddEditRequest(Request req, Response res) {
+  public static ModelAndView handleAddRequest(Request req, Response res) {
     CategoryDao categoryDao = new CategoryDaoImpl();
     EventDao eventDao = new EventDaoImpl();
 
@@ -75,11 +84,14 @@ public class EventController {
       String eventDescription = req.queryParams("event-description");
       Category eventCategory = categoryDao
           .find(Integer.parseInt(req.queryParams("event-category")));
-      Date eventDate = new Date();
+
+      String unparsedDate = req.queryParams("event-date") + " " + req.queryParams("event-time");
+      Date eventDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(unparsedDate);
+
       String eventLink = req.queryParams("event-link");
 
       eventDao.insert(new Event(eventName, eventDescription, eventCategory, eventDate, eventLink));
-    } catch (SQLException e) {
+    } catch (SQLException | ParseException e) {
       e.printStackTrace();
     }
 
