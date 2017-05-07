@@ -31,13 +31,12 @@
 <div class="container">
   <div class="page-header">
     <h2>Codecool Events</h2>
-    <a th:href="@{~/event/add}">
-      <input type="button" class="btn btn-default" value="Add new event">
-    </a>
+    <a th:href="@{~/event/add}" href="event/add" class="btn btn-default">
+      <img src="img/icons/add.png" th:src="@{~/img/icons/add.png}"/> Add new event</a>
   </div>
 
-  <nav>
-    <ul class="nav nav-tabs" id="categories">
+  <nav id="categories">
+    <ul class="nav nav-tabs">
       <!--/*@thymesVar id="tabActive" type="String"*/-->
       <li th:class="(${tabActive} == 'all')? 'active' : ''" id="all-events"><a
           th:href="@{~/}">All events</a></li>
@@ -45,7 +44,7 @@
       <!--/*@thymesVar id="categoryList" type="List<Category>"*/-->
       <li th:class="(${tabActive} == ${category.getId()})? 'active' : ''"
           th:each="category : ${categoryList}" th:id="'category-' + ${category.getId()}">
-        <a href="#" th:href="@{'~/category/' + ${category.getId()}}"
+        <a th:href="@{'~/category/' + ${category.getId()}}"
            th:text="${category.getName()}"></a>
       </li>
     </ul>
@@ -69,12 +68,10 @@
                     data-toggle="popover" data-trigger="focus"
                     th:data-content="${event.getDescription()}">Description
             </button>
-            <form th:action="@{'~/event/' + ${event.getId()} + '/edit'}" method="GET">
-              <button type="submit" class="btn btn-warning">Edit</button>
-            </form>
-            <form th:action="@{'~/event/' + ${event.getId()} + '/delete'}" method="GET">
-              <button type="submit" class="btn btn-danger">Delete</button>
-            </form>
+            <a class="btn btn-warning" th:href="@{'~/event/' + ${event.getId()} + '/edit'}">
+              <img src="img/icons/edit.png" th:src="@{~/img/icons/edit.png}"/> Edit</a>
+            <a th:href="@{'~/event/' + ${event.getId()} + '/delete'}" class="btn btn-danger">
+              <img src="img/icons/delete.png" th:src="@{~/img/icons/delete.png}"/> Delete</a>
           </div>
         </div>
       </div>
