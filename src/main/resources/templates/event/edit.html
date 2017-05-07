@@ -1,0 +1,88 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Add new event</title>
+
+  <!--jQuery CDN-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"
+          th:src="@{~/js/jquery.min.js}"></script>
+
+  <!--Bootstrap CDN-->
+  <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+  <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+        integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+        crossorigin="anonymous">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+          integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+          crossorigin="anonymous"></script>
+
+  <link href="css/style.css" th:href="@{~/css/style.css}" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+<div class="container">
+  <div class="page-header">
+    <h2>Add new event</h2>
+  </div>
+
+  <div class="col-sm-1 col-md-2 col-lg-3"></div>
+  <!--/*@thymesVar id="eventList" type="List<Event>"*/-->
+  <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6" th:each="event : ${eventList}">
+    <form th:action="@{'~/event/' + ${event.getId()} + '/edit'}" method="POST">
+      <div class="form-group">
+        <label>ID:</label>
+        <input type="number" class="form-control" name="event-id" th:value="${event.getId()}" readonly/>
+      </div>
+      <div class="form-group">
+        <label>Name:</label>
+        <input type="text" class="form-control" name="event-name" th:value="${event.getName()}"/>
+      </div>
+      <div class="form-group">
+        <textarea class="form-control" name="event-description"
+                  placeholder="Description" th:value="${event.getDescription()}"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Link:</label>
+        <input type="text" class="form-control" name="event-link"
+               placeholder="e.g. www.google.com, without 'http://'" th:value="${event.getLink()}"/>
+      </div>
+      <div class="form-group">
+        <label>Date:</label>
+        <input type="date" class="form-control" name="event-date"/>
+
+        <label>Time:</label>
+        <input type="time" class="form-control" name="event-time"/>
+      </div>
+      <div class="form-group">
+        <label>Category:</label>
+        <!--/*@thymesVar id="categoryList" type="List<Category>"*/-->
+        <select class="form-control" name="event-category">
+          <option selected disabled>Category</option>
+          <option th:each="category : ${categoryList}"
+                  th:text="${category.getName()}"
+                  th:value="${category.getId()}"></option>
+        </select>
+      </div>
+      <div class="form-group" id="event-submit">
+        <input type="submit" class="btn btn-success" value="Submit"/>
+        <input type="button" class="btn btn-default" value="Cancel" th:href="@{~/}"/>
+      </div>
+    </form>
+  </div>
+  <div class="col-sm-1 col-md-2 col-lg-3"></div>
+
+
+</div>
+<div th:replace="footer :: copy"></div>
+<script src="/js/main.js" th:src="@{~/js/main.js}"></script>
+
+</body>
+</html>
