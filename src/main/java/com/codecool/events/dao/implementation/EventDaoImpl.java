@@ -134,8 +134,6 @@ public class EventDaoImpl implements EventDao {
       Connection conn = dbConn.connect();
       Statement dbStatement = conn.createStatement();
 
-
-
       dbStatement.execute("INSERT OR REPLACE INTO Event (id, name, description, date, categoryID, link)"
           + " VALUES ((SELECT id FROM Event WHERE id=" +
           event.getId() + "), '" +
