@@ -122,6 +122,7 @@ public class EventDaoImpl implements EventDao {
       dbStatement.close();
       dbConn.closeConnection(conn);
     } catch (Exception e) {
+      e.printStackTrace();
       throw new SQLException("Couldn't found events!");
     }
     return foundEventList;
@@ -133,8 +134,11 @@ public class EventDaoImpl implements EventDao {
       Connection conn = dbConn.connect();
       Statement dbStatement = conn.createStatement();
 
-      dbStatement.execute("INSERT INTO Event (name, description, date, categoryID, link)"
-          + " VALUES ('" +
+
+
+      dbStatement.execute("INSERT OR REPLACE INTO Event (id, name, description, date, categoryID, link)"
+          + " VALUES ((SELECT id FROM Event WHERE id=" +
+          event.getId() + "), '" +
           event.getName() + "', '" +
           event.getDescription() + "', " +
           event.getDate().getTime() + ", " +
