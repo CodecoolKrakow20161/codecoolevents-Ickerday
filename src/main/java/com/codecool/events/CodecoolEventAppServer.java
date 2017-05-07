@@ -13,12 +13,11 @@ class CodecoolEventAppServer {
 
     get("/event/add", EventController::renderAddForm, new ThymeleafTemplateEngine());
 
-    post("/event/add", EventController::handleAddEditRequest, new ThymeleafTemplateEngine());
+    post("/event/add", EventController::handleAddRequest, new ThymeleafTemplateEngine());
 
     // TODO
     get("/event/:id/edit", EventController::renderEditForm, new ThymeleafTemplateEngine());
 
-    //TODO
     get("/event/:id/delete", EventController::handleDeleteRequest, new ThymeleafTemplateEngine());
 
     get("/category/:id", EventController::renderEvents, new ThymeleafTemplateEngine());
