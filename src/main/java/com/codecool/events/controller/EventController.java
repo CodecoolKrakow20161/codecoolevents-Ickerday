@@ -22,7 +22,7 @@ import spark.Response;
 
 public class EventController {
 
-  public static ModelAndView renderEvents(Request req, Response res) {
+  public ModelAndView renderEvents(Request req, Response res) {
     EventDao eventDao = new EventDaoImpl();
     CategoryDao categoryDao = new CategoryDaoImpl();
     Map<String, Object> params = new HashMap<>();
@@ -47,7 +47,7 @@ public class EventController {
     return new ModelAndView(params, "event/index");
   }
 
-  public static ModelAndView renderAddForm(Request req, Response res) {
+  public ModelAndView renderAddForm(Request req, Response res) {
     CategoryDao categoryDao = new CategoryDaoImpl();
     Map<String, Object> params = new HashMap<>();
 
@@ -59,8 +59,7 @@ public class EventController {
     return new ModelAndView(params, "event/add");
   }
 
-  // TODO
-  public static ModelAndView renderEditForm(Request req, Response res) {
+  public ModelAndView renderEditForm(Request req, Response res) {
     CategoryDao categoryDao = new CategoryDaoImpl();
     EventDao eventDao = new EventDaoImpl();
     Map<String, Object> params = new HashMap<>();
@@ -78,7 +77,7 @@ public class EventController {
     return new ModelAndView(params, "event/edit");
   }
 
-  public static ModelAndView handleAddRequest(Request req, Response res) {
+  public ModelAndView handleAddRequest(Request req, Response res) {
     CategoryDao categoryDao = new CategoryDaoImpl();
     EventDao eventDao = new EventDaoImpl();
 
@@ -108,7 +107,7 @@ public class EventController {
     return renderEvents(req, res);
   }
 
-  public static ModelAndView handleEditRequest(Request req, Response res) {
+  public ModelAndView handleEditRequest(Request req, Response res) {
     CategoryDao categoryDao = new CategoryDaoImpl();
     EventDao eventDao = new EventDaoImpl();
 
@@ -143,7 +142,7 @@ public class EventController {
     return renderEvents(req, res);
   }
 
-  public static ModelAndView handleDeleteRequest(Request req, Response res) {
+  public ModelAndView handleDeleteRequest(Request req, Response res) {
     EventDao eventDao = new EventDaoImpl();
 
     try {

@@ -104,8 +104,8 @@ public class EventDaoImpl implements EventDao {
       Connection conn = dbConn.connect();
       Statement dbStatement = conn.createStatement();
 
-      ResultSet dbQuery = dbStatement
-          .executeQuery("SELECT * FROM Event WHERE categoryID=" + category.getId());
+      ResultSet dbQuery = dbStatement.executeQuery(
+          "SELECT * FROM Event WHERE categoryID=" + category.getId());
 
       while (dbQuery.next()) {
         foundEventList.add(new Event(
@@ -121,9 +121,10 @@ public class EventDaoImpl implements EventDao {
       dbQuery.close();
       dbStatement.close();
       dbConn.closeConnection(conn);
+    } catch (NullPointerException n) {
+      System.out.println("No events in category" + category.toString());
     } catch (Exception e) {
       e.printStackTrace();
-      throw new SQLException("Couldn't found events!");
     }
     return foundEventList;
   }
@@ -134,15 +135,16 @@ public class EventDaoImpl implements EventDao {
       Connection conn = dbConn.connect();
       Statement dbStatement = conn.createStatement();
 
-      dbStatement.execute("INSERT OR REPLACE INTO Event (id, name, description, date, categoryID, link)"
-          + " VALUES ((SELECT id FROM Event WHERE id=" +
-          event.getId() + "), '" +
-          event.getName() + "', '" +
-          event.getDescription() + "', " +
-          event.getDate().getTime() + ", " +
-          event.getCategory().getId() + ", '" +
-          event.getLink() + "')"
-      );
+      dbStatement
+          .execute("INSERT OR REPLACE INTO Event (id, name, description, date, categoryID, link)"
+              + " VALUES ((SELECT id FROM Event WHERE id=" +
+              event.getId() + "), '" +
+              event.getName() + "', '" +
+              event.getDescription() + "', " +
+              event.getDate().getTime() + ", " +
+              event.getCategory().getId() + ", '" +
+              event.getLink() + "')"
+          );
 
       dbStatement.close();
       dbConn.closeConnection(conn);

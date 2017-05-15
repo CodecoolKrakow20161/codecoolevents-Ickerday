@@ -1,6 +1,10 @@
 package com.codecool.events;
 
-import static spark.Spark.*;
+import static spark.Spark.get;
+import static spark.Spark.path;
+import static spark.Spark.port;
+import static spark.Spark.post;
+import static spark.Spark.staticFileLocation;
 
 import com.codecool.events.controller.EventController;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
@@ -8,22 +12,43 @@ import spark.template.thymeleaf.ThymeleafTemplateEngine;
 class CodecoolEventAppServer {
 
   CodecoolEventAppServer() {
-    port(8888);
-    staticFileLocation("/static");
+    Integer PORT_NUMBER = getHerokuAssignedPort();
+    port(PORT_NUMBER);
 
-    get("/event/add", EventController::renderAddForm, new ThymeleafTemplateEngine());
+    String locationPath = "/static";
+    staticFileLocation(locationPath);
 
-    post("/event/add", EventController::handleAddRequest, new ThymeleafTemplateEngine());
+    EventController eventController = new EventController();
+    ThymeleafTemplateEngine templateEngine = new ThymeleafTemplateEngine();
 
-    // TODO
-    get("/event/:id/edit", EventController::renderEditForm, new ThymeleafTemplateEngine());
+    path("/event", () -> {
 
-    post("/event/:id/edit", EventController::handleEditRequest, new ThymeleafTemplateEngine());
+      path("/:id", () -> {
 
-    get("/event/:id/delete", EventController::handleDeleteRequest, new ThymeleafTemplateEngine());
+        get("/edit", eventController::renderEditForm, templateEngine);
 
-    get("/category/:id", EventController::renderEvents, new ThymeleafTemplateEngine());
+        get("/delete", eventController::handleDeleteRequest, templateEngine);
 
-    get("/", EventController::renderEvents, new ThymeleafTemplateEngine());
+        post("/edit", eventController::handleEditRequest, templateEngine);
+
+      });
+
+      get("/add", eventController::renderAddForm, templateEngine);
+
+      post("/add", eventController::handleAddRequest, templateEngine);
+
+    });
+
+    get("/category/:id", eventController::renderEvents, templateEngine);
+
+    get("/", eventController::renderEvents, templateEngine);
+  }
+
+  private Integer getHerokuAssignedPort() {
+    ProcessBuilder processBuilder = new ProcessBuilder();
+    if (processBuilder.environment().get("PORT") != null) {
+      return Integer.parseInt(processBuilder.environment().get("PORT"));
+    }
+    return 8888;
   }
 }
