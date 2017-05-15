@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Class-Path: javassist-3.20.0-GA.jar websocket-client-9.3.6.v20151106.j
+ ar jetty-webapp-9.3.6.v20151106.jar websocket-api-9.3.6.v20151106.jar
+  jetty-http-9.3.6.v20151106.jar thymeleaf-3.0.2.RELEASE.jar slf4j-api
+ -1.7.13.jar sqlite-jdbc-3.16.1.jar websocket-server-9.3.6.v20151106.j
+ ar jetty-util-9.3.6.v20151106.jar attoparser-2.0.1.RELEASE.jar spark-
+ core-2.5.5.jar jetty-servlet-9.3.6.v20151106.jar jetty-security-9.3.6
+ .v20151106.jar jetty-xml-9.3.6.v20151106.jar spark-template-thymeleaf
+ -2.5.5.jar websocket-common-9.3.6.v20151106.jar jetty-server-9.3.6.v2
+ 0151106.jar ognl-3.1.10.jar unbescape-1.1.4.RELEASE.jar jetty-io-9.3.
+ 6.v20151106.jar javax.servlet-api-3.1.0.jar websocket-servlet-9.3.6.v
+ 20151106.jar slf4j-nop-1.7.12.jar
+Main-Class: com.codecool.events.Main
+
