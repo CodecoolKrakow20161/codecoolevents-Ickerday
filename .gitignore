@@ -16,3 +16,4 @@ project.iml
 
 *.db-journal
 /target/
+.db
