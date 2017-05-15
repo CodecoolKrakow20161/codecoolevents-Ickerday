@@ -33,6 +33,16 @@
 
   <build>
     <plugins>
+      <!--<plugin>-->
+        <!--<groupId>org.apache.maven.plugins</groupId>-->
+        <!--<artifactId>maven-jar-plugin</artifactId>-->
+        <!--<version>3.0.0</version>-->
+        <!--<configuration>-->
+          <!--<archive>-->
+            <!--<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>-->
+          <!--</archive>-->
+        <!--</configuration>-->
+      <!--</plugin>-->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -56,20 +66,20 @@
           </execution>
         </executions>
       </plugin>
-      <plugin>
-        <groupId>com.heroku.sdk</groupId>
-        <artifactId>heroku-maven-plugin</artifactId>
-        <version>1.1.4</version>
-        <configuration>
-          <jdkVersion>1.8</jdkVersion>
-          <processTypes>
-            <!-- Tell Heroku how to launch your application -->
-            <!-- You might have to remove the ./ in front   -->
-            <web>java -jar target/EventCRUD-0.9-jar-with-dependencies.jar com.codecool.events.Main
-            </web>
-          </processTypes>
-        </configuration>
-      </plugin>
+      <!--<plugin>-->
+      <!--<groupId>com.heroku.sdk</groupId>-->
+      <!--<artifactId>heroku-maven-plugin</artifactId>-->
+      <!--<version>1.1.4</version>-->
+      <!--<configuration>-->
+      <!--<jdkVersion>1.8</jdkVersion>-->
+      <!--<processTypes>-->
+      <!--&lt;!&ndash; Tell Heroku how to launch your application &ndash;&gt;-->
+      <!--&lt;!&ndash; You might have to remove the ./ in front   &ndash;&gt;-->
+      <!--<web>java -jar ./target/EventCRUD-0.9.jar com.codecool.events.Main-->
+      <!--</web>-->
+      <!--</processTypes>-->
+      <!--</configuration>-->
+      <!--</plugin>-->
     </plugins>
   </build>
 
