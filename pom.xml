@@ -36,10 +36,14 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>3.0.2</version>
         <configuration>
           <archive>
-            <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <mainClass>com.codecool.events.Main</mainClass>
+              <classpathPrefix>dependency-jars/</classpathPrefix>
+            </manifest>
           </archive>
         </configuration>
       </plugin>
@@ -63,6 +67,11 @@
             <goals>
               <goal>copy-dependencies</goal>
             </goals>
+            <configuration>
+              <outputDirectory>
+                ${project.build.directory}/dependency-jars/
+              </outputDirectory>
+            </configuration>
           </execution>
         </executions>
       </plugin>
