@@ -9,6 +9,8 @@ public interface EventDao {
 
   void insert(Event event) throws SQLException;
 
+  void update(Event event) throws SQLException;
+
   Event find(Integer id) throws SQLException;
 
   void delete(Event event) throws SQLException;
