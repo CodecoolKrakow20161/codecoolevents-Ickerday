@@ -14,16 +14,21 @@ import java.util.List;
 
 public class EventDaoImpl implements EventDao {
 
-  private final DbConnector dbConn = new DbConnector();
+  private final Connection dbConn;
+  private final CategoryDao categoryDao;
+
+  public EventDaoImpl(Connection dbConn) {
+    this.dbConn = dbConn;
+    categoryDao = new CategoryDaoImpl(dbConn);
+
+  }
 
   @Override
   public List<Event> getAllEvents() throws SQLException {
     List<Event> eventList = new ArrayList<>();
-    CategoryDao categoryDao = new CategoryDaoImpl();
 
     try {
-      Connection conn = dbConn.connect();
-      Statement dbStatement = conn.createStatement();
+      Statement dbStatement = dbConn.createStatement();
 
       ResultSet dbQuery = dbStatement.executeQuery("SELECT * FROM Event");
 
@@ -33,14 +38,13 @@ public class EventDaoImpl implements EventDao {
             dbQuery.getString("name"),
             dbQuery.getString("description"),
             categoryDao.find(dbQuery.getInt("categoryID")),
-            new Date(Long.parseLong(dbQuery.getString("date"))),
+            new Date(dbQuery.getLong("date")),
             dbQuery.getString("link")
         ));
       }
 
       dbQuery.close();
       dbStatement.close();
-      dbConn.closeConnection(conn);
     } catch (SQLException e) {
       e.printStackTrace();
       throw new SQLException("SQL ERROR: Couldn't get events!");
@@ -51,14 +55,12 @@ public class EventDaoImpl implements EventDao {
   @Override
   public void delete(Event event) throws SQLException {
     try {
-      Connection conn = dbConn.connect();
-      Statement dbStatement = conn.createStatement();
+      Statement dbStatement = dbConn.createStatement();
 
-      String query = "DELETE FROM Event WHERE id=" + event.getId();
+      String query = String.format("DELETE FROM Event WHERE id=%d", event.getId());
 
       dbStatement.execute(query);
       dbStatement.close();
-      dbConn.closeConnection(conn);
     } catch (SQLException e) {
       throw new SQLException("SQL ERROR: Couldn't delete from database!");
     }
@@ -67,11 +69,9 @@ public class EventDaoImpl implements EventDao {
   @Override
   public Event find(Integer id) throws SQLException {
     Event foundEvent = null;
-    CategoryDao categoryDao = new CategoryDaoImpl();
 
     try {
-      Connection conn = dbConn.connect();
-      Statement dbStatement = conn.createStatement();
+      Statement dbStatement = dbConn.createStatement();
 
       ResultSet dbQuery = dbStatement.executeQuery("SELECT * FROM Event WHERE id=" + id);
 
@@ -88,7 +88,6 @@ public class EventDaoImpl implements EventDao {
 
       dbQuery.close();
       dbStatement.close();
-      dbConn.closeConnection(conn);
     } catch (Exception e) {
       throw new SQLException("Couldn't found event!");
     }
@@ -98,11 +97,9 @@ public class EventDaoImpl implements EventDao {
   @Override
   public List<Event> getEventsBy(Category category) throws SQLException {
     List<Event> foundEventList = new ArrayList<>();
-    CategoryDao categoryDao = new CategoryDaoImpl();
 
     try {
-      Connection conn = dbConn.connect();
-      Statement dbStatement = conn.createStatement();
+      Statement dbStatement = dbConn.createStatement();
 
       ResultSet dbQuery = dbStatement.executeQuery(
           "SELECT * FROM Event WHERE categoryID=" + category.getId());
@@ -120,34 +117,44 @@ public class EventDaoImpl implements EventDao {
 
       dbQuery.close();
       dbStatement.close();
-      dbConn.closeConnection(conn);
-    } catch (NullPointerException n) {
-      System.out.println("No events in category" + category.toString());
     } catch (Exception e) {
-      e.printStackTrace();
+      System.out.println("No events in category" + category.toString());
     }
     return foundEventList;
   }
 
   @Override
-  public void insert(Event event) throws SQLException {
+  public void update(Event event) throws SQLException {
     try {
-      Connection conn = dbConn.connect();
-      Statement dbStatement = conn.createStatement();
+      Statement dbStatement = dbConn.createStatement();
 
-      dbStatement
-          .execute("INSERT OR REPLACE INTO Event (id, name, description, date, categoryID, link)"
-              + " VALUES ((SELECT id FROM Event WHERE id=" +
-              event.getId() + "), '" +
-              event.getName() + "', '" +
-              event.getDescription() + "', " +
-              event.getDate().getTime() + ", " +
-              event.getCategory().getId() + ", '" +
-              event.getLink() + "')"
-          );
+      String query = String.format(
+          "UPDATE Event SET name='%s', description='%s', date=%d, categoryID=%d, link='%s' WHERE id=%d;",
+          event.getName(), event.getDescription(), event.getDate().getTime(),
+          event.getCategory().getId(), event.getLink(), event.getId());
+
+      dbStatement.executeUpdate(query);
 
       dbStatement.close();
-      dbConn.closeConnection(conn);
+    } catch (Exception e) {
+      e.printStackTrace();
+      throw new SQLException("SQL ERROR: Couldn't insert to database!");
+    }
+  }
+
+  @Override
+  public void insert(Event event) throws SQLException {
+    try {
+      Statement dbStatement = dbConn.createStatement();
+
+      String query = String.format(
+          "INSERT INTO Event (name, description, date, categoryID, link) VALUES ('%s', '%s', %d, %d, '%s')",
+          event.getName(), event.getDescription(), event.getDate().getTime(),
+          event.getCategory().getId(), event.getLink());
+
+      dbStatement.executeUpdate(query);
+
+      dbStatement.close();
     } catch (Exception e) {
       e.printStackTrace();
       throw new SQLException("SQL ERROR: Couldn't insert to database!");

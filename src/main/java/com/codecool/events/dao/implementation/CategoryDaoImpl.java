@@ -11,17 +11,22 @@ import java.util.List;
 
 public class CategoryDaoImpl implements CategoryDao {
 
-  private final DbConnector dbConn = new DbConnector();
+  private final Connection dbConn;
+
+  public CategoryDaoImpl(Connection dbConn) {
+    this.dbConn = dbConn;
+  }
 
   @Override
   public Category find(Integer id) throws SQLException {
     Category foundCategory = null;
 
     try {
-      Connection conn = dbConn.connect();
-      Statement dbStatement = conn.createStatement();
+      Statement dbStatement = dbConn.createStatement();
 
-      ResultSet dbQuery = dbStatement.executeQuery("SELECT * FROM Category WHERE id=" + id);
+      String query = String.format("SELECT * FROM Category WHERE id=%d", id);
+
+      ResultSet dbQuery = dbStatement.executeQuery(query);
 
       if (dbQuery.next()) {
         foundCategory = new Category(
@@ -33,7 +38,6 @@ public class CategoryDaoImpl implements CategoryDao {
 
       dbQuery.close();
       dbStatement.close();
-      dbConn.closeConnection(conn);
     } catch (Exception e) {
       throw new SQLException("Couldn't found category!");
     }
@@ -45,8 +49,7 @@ public class CategoryDaoImpl implements CategoryDao {
     List<Category> categoryList = new ArrayList<>();
 
     try {
-      Connection conn = dbConn.connect();
-      Statement dbStatement = conn.createStatement();
+      Statement dbStatement = dbConn.createStatement();
 
       ResultSet dbQuery = dbStatement.executeQuery("SELECT * FROM Category");
 
@@ -60,7 +63,6 @@ public class CategoryDaoImpl implements CategoryDao {
 
       dbQuery.close();
       dbStatement.close();
-      dbConn.closeConnection(conn);
     } catch (SQLException e) {
       e.printStackTrace();
       throw new SQLException("SQL ERROR: Couldn't get categories!");
