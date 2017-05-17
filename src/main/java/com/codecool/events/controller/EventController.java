@@ -8,6 +8,7 @@ import com.codecool.events.dao.implementation.CategoryDaoImpl;
 import com.codecool.events.dao.implementation.EventDaoImpl;
 import com.codecool.events.model.Category;
 import com.codecool.events.model.Event;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,9 +23,18 @@ import spark.Response;
 
 public class EventController {
 
+  private Connection dbConn;
+  private EventDao eventDao;
+  private CategoryDao categoryDao;
+
+
+  public EventController(Connection dbConn) {
+    this.dbConn = dbConn;
+    this.categoryDao = new CategoryDaoImpl(this.dbConn);
+    this.eventDao = new EventDaoImpl(this.dbConn);
+  }
+
   public ModelAndView renderEvents(Request req, Response res) {
-    EventDao eventDao = new EventDaoImpl();
-    CategoryDao categoryDao = new CategoryDaoImpl();
     Map<String, Object> params = new HashMap<>();
 
     try {
@@ -40,6 +50,8 @@ public class EventController {
       }
 
       params.put("categoryList", categoryDao.getAllCategories());
+
+      res.status(300);
     } catch (SQLException e) {
       throw halt(400, "Couldn't show events!");
     }
@@ -48,7 +60,6 @@ public class EventController {
   }
 
   public ModelAndView renderAddForm(Request req, Response res) {
-    CategoryDao categoryDao = new CategoryDaoImpl();
     Map<String, Object> params = new HashMap<>();
 
     try {
@@ -60,8 +71,6 @@ public class EventController {
   }
 
   public ModelAndView renderEditForm(Request req, Response res) {
-    CategoryDao categoryDao = new CategoryDaoImpl();
-    EventDao eventDao = new EventDaoImpl();
     Map<String, Object> params = new HashMap<>();
 
     try {
@@ -71,6 +80,8 @@ public class EventController {
 
       params.put("eventList", eventList);
       params.put("categoryList", categoryDao.getAllCategories());
+
+      res.status(300);
     } catch (SQLException e) {
       throw halt(400, "Invalid edit request!");
     }
@@ -78,9 +89,6 @@ public class EventController {
   }
 
   public ModelAndView handleAddRequest(Request req, Response res) {
-    CategoryDao categoryDao = new CategoryDaoImpl();
-    EventDao eventDao = new EventDaoImpl();
-
     try {
       if (req.queryParams().contains("event-category")) {
         String eventName = req.queryParams("event-name");
@@ -108,13 +116,6 @@ public class EventController {
   }
 
   public ModelAndView handleEditRequest(Request req, Response res) {
-    CategoryDao categoryDao = new CategoryDaoImpl();
-    EventDao eventDao = new EventDaoImpl();
-
-    for (Object str:req.queryParams().toArray()) {
-      System.out.println(str.toString());
-    }
-
     try {
       if (req.queryParams().contains("event-category")) {
         Integer eventID = Integer.parseInt(req.queryParams("event-id"));
@@ -129,7 +130,8 @@ public class EventController {
         String eventLink = req.queryParams("event-link");
 
         eventDao
-            .insert(new Event(eventID, eventName, eventDescription, eventCategory, eventDate, eventLink));
+            .update(new Event(eventID, eventName, eventDescription, eventCategory, eventDate, eventLink));
+
       } else {
         throw new SQLException("No category provided!");
       }
@@ -143,8 +145,6 @@ public class EventController {
   }
 
   public ModelAndView handleDeleteRequest(Request req, Response res) {
-    EventDao eventDao = new EventDaoImpl();
-
     try {
       if (req.params().containsKey(":id")) {
         Integer eventID = Integer.parseInt(req.params(":id"));
